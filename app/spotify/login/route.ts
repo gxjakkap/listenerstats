@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "development"){
     callbackUrl = "http://localhost:3000/spotify/callback"
 }
 
-export async function GET(request: NextApiRequest, response: NextApiResponse) {
+export async function GET() {
     const state = crypto.randomBytes(8).toString('hex')
     const scope = "user-top-read user-read-private user-read-email"
 

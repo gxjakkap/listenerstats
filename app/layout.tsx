@@ -6,7 +6,23 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'ListenerStats',
-  description: 'View your music streaming stats',
+  description: 'Your music obsession, visualized.',
+  openGraph: {
+    title: 'ListenerStats',
+    description: 'Your music obsession, visualized.',
+    url: 'https://lstats.guntxjakka.me',
+    siteName: 'ListenerStats',
+    images: [
+      {url: 'https://cdn.statically.io/og/ListenerStats.jpg', width: 2048, height: 1170}
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ListenerStats',
+    description: 'Your music obsession, visualized.',
+    creator: '@guntxjakka',
+    images: 'https://cdn.statically.io/og/ListenerStats.jpg'
+  }
 }
 
 export default function RootLayout({

@@ -56,7 +56,7 @@ export default async function ShowLayout({
             <div className="mx-auto w-full max-w-screen-lg py-12 xl:max-w-screen-xl">
                 <div className="text-center">
                     <h2 className="text-4xl font-semibold tracking-tight text-neutral md:text-5xl">
-                        {data.display_name}'s Spotify Stats✨
+                        {data.display_name}&apos;s Spotify Stats✨
                     </h2>
                 </div>
                 {children}

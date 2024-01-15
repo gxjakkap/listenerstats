@@ -3,6 +3,12 @@ import axios from 'axios'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 
+let callbackUrl = "https://lstats.guntxjakka.me/spotify/callback"
+
+if (process.env.NODE_ENV === "development"){
+    callbackUrl = "http://localhost:3000/spotify/callback"
+}
+
 export async function GET(request: Request) {
     const { searchParams } = new URL(request.url)
     const code = searchParams.get('code')
@@ -16,7 +22,7 @@ export async function GET(request: Request) {
     else {
         const body = {
             "code": code as string,
-            "redirect_uri": "http://localhost:3000/spotify/callback",
+            "redirect_uri": callbackUrl,
             "grant_type": "authorization_code"
         }
 

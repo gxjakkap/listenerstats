@@ -47,6 +47,9 @@ export default async function ShowLayout({
                 }
             })
             data = await ures.json()
+            if ((ures.status === 401) && (data.error.message === "The access token expired")){
+                redirect('/')
+            }
         }
 
         

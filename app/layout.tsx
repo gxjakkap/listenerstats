@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/react';
+import { Analytics } from '@vercel/analytics/react'
+import { CookiesProvider } from 'next-client-cookies/server' // will remove when next app dir officially support cookies on client side
 import './globals.css'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -34,19 +35,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <div className="min-h-screen flex flex-col">
-          <div className="mb-auto">
-            {children}
+      <CookiesProvider>
+        <body className={inter.className}>
+          <div className="min-h-screen flex flex-col">
+            <div className="mb-auto">
+              {children}
+            </div>
+            <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+              <aside>
+                <p>Copyright © 2024 - Jakkaphat Ch.</p>
+              </aside>
+            </footer>
+            <Analytics />
           </div>
-          <footer className="footer footer-center p-4 bg-base-300 text-base-content">
-            <aside>
-              <p>Copyright © 2024 - Jakkaphat Ch.</p>
-            </aside>
-          </footer>
-          <Analytics />
-        </div>
-      </body>
+        </body>
+      </CookiesProvider>
     </html>
   )
 }

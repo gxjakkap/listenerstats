@@ -5,7 +5,7 @@ import { redirect } from 'next/navigation'
 
 export async function GET(request: Request) {
     const state = crypto.randomBytes(8).toString('hex')
-    const scope = "user-top-read user-read-private user-read-email"
+    const scope = "user-top-read user-read-private"
 
     let callbackUrl = "https://lstats.guntxjakka.me/spotify/callback"
 

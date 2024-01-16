@@ -192,10 +192,10 @@ export default async function ShowData({ params }: { params: { toptype: string, 
         accessToken = cookieStore.get('lstats-spotify-token')?.value
         tokenExpiry = parseInt(cookieStore.get('lstats-spotify-expires-date')?.value as string)
 
-        if (now.getTime() >= tokenExpiry){
+        /* if (now.getTime() >= tokenExpiry){
             //TODO: refresh session
             redirect('/')
-        }
+        } */
 
         const res = await fetch(`https://api.spotify.com/v1/me/top/${params.toptype}?limit=10&offset=0&time_range=${params.timeperiod}`, {
             method: "GET",

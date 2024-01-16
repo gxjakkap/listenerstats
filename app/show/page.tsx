@@ -8,9 +8,9 @@ export default function ShowHome() {
     const [topType, setType] = useState<"tracks" | "artists">("tracks")
     
     return (
-        <div className="flex flex-col md:flex-row gap-y-2 md:gap-x-1 min-h-screen lg:min-h-[95vh]">
+        <div className="flex flex-col w-full md:flex-row gap-y-2 md:gap-x-1 min-h-screen lg:min-h-[95vh]">
             <div className="mx-auto w-3/4 justify-center">
-                <label className="form-control w-full max-w-xs">
+                <label className="form-control w-full max-w-md">
                     <div className="label">
                         <span className="label-text">Select time period</span>
                     </div>
@@ -20,7 +20,7 @@ export default function ShowHome() {
                         <option value={"long_term"}>All time</option>
                     </select>
                 </label>
-                <label className="form-control w-full max-w-xs">
+                <label className="form-control w-full max-w-md">
                     <div className="label">
                         <span className="label-text">Type</span>
                     </div>
@@ -29,7 +29,7 @@ export default function ShowHome() {
                         <option value={"artists"}>Artists</option>
                     </select>
                 </label>
-                <Link href={`/show/${topType}/${timePeriod}`}><button className="btn btn-primary">Get Data</button></Link>
+                <Link href={`/show/${topType}/${timePeriod}`}><button className="btn btn-primary mt-5">Get Data</button></Link>
             </div>
         </div>
     )

@@ -161,7 +161,7 @@ const TopArtistsGridElement = ({ artist } : {artist: Artist[]}) => {
                         <div className="card-body">
                             <h2 className="card-title text-3xl">#{(i + 1).toString()}</h2>
                             <div className="flex-shrink">
-                                <p className="mb-0">{data.name}</p>
+                                <p className="mb-0 font-bold text-lg">{data.name}</p>
                                 <p className="mb-0">Genre: {getGenreString(data.genres)}</p>
                             </div>
                         </div>

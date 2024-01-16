@@ -22,7 +22,8 @@ export const metadata: Metadata = {
     description: 'Your music obsession, visualized.',
     creator: '@guntxjakka',
     images: 'https://cdn.statically.io/og/ListenerStats.jpg'
-  }
+  },
+  metadataBase: new URL('https://lstats.guntxjakka.me')
 }
 
 export default function RootLayout({

@@ -5,12 +5,12 @@ import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link';
 
-
 export default async function ShowLayout({
     children,
   }: {
     children: React.ReactNode
 }) {
+    
     const cookieStore = cookies()
 
     const streamingService = cookieStore.get('lstats-streaming-service')
@@ -29,10 +29,15 @@ export default async function ShowLayout({
         accessToken = cookieStore.get('lstats-spotify-token')?.value
         tokenExpiry = parseInt(cookieStore.get('lstats-spotify-expires-date')?.value as string)
 
-        if (now.getTime() >= tokenExpiry){
+        const nowEpoch = now.getTime()
+
+        console.log(nowEpoch)
+        console.log(tokenExpiry)
+
+       /*  if (nowEpoch >= tokenExpiry){
             //TODO: refresh session
             redirect('/')
-        }
+        } */
         let ures: any
         if (!data){
             ures = await fetch('https://api.spotify.com/v1/me', {

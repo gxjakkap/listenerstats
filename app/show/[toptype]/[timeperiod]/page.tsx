@@ -24,10 +24,10 @@ interface Album {
     release_date_precision: string;
     type: string;
     uri: string;
-    artists: Artist[];
+    artists: ArtistForTrack[];
 }
   
-interface Artist {
+interface ArtistForTrack {
     external_urls: {
         spotify: string;
     };
@@ -40,7 +40,7 @@ interface Artist {
   
 interface Track {
     album: Album;
-    artists: Artist[];
+    artists: ArtistForTrack[];
     available_markets: string[];
     disc_number: number;
     duration_ms: number;
@@ -61,20 +61,41 @@ interface Track {
     uri: string;
     is_local: boolean;
 }
-  
+
+const getMaxSizeImage = (imageArray: {
+    url: string;
+    height: number;
+    width: number;
+}[]) => {
+    imageArray.sort((a, b) => b.width - a.width)
+    console.log(imageArray)
+    return imageArray[0].url
+}
+
+export interface Artist {
+    external_urls: {
+        spotify: string
+    }
+    followers: {
+        href: any
+        total: number
+    }
+    genres: string[]
+    href: string
+    id: string
+    images: {
+        url: string
+        height: number
+        width: number
+    }[]
+    name: string
+    popularity: number
+    type: string
+    uri: string
+}
 
 const TopTracksGridElement = ({ tracks } : {tracks: Track[]}) => {
-    const getMaxSize = (imageArray: {
-        url: string;
-        height: number;
-        width: number;
-    }[]) => {
-        imageArray.sort((a, b) => b.width - a.width)
-        console.log(imageArray)
-        return imageArray[0].url
-    }
-
-    const getArtistString = (artists: Artist[]) => {
+    const getArtistString = (artists: ArtistForTrack[]) => {
         /* return artists.reduce((acc, x) => acc += x.name, "") */
         if (artists.length === 1){
             return artists[0].name
@@ -98,10 +119,51 @@ const TopTracksGridElement = ({ tracks } : {tracks: Track[]}) => {
             {tracks.map((data, i) => (
                 <Link key={data.uri} href={data.external_urls.spotify || ""}>
                     <div className="card z-0 w-96 bg-base-100 shadow-xl image-full">
-                        <figure><img src={getMaxSize(data.album.images)} alt={`${data.album.name}'s album cover`} /></figure>
+                        <figure><img src={getMaxSizeImage(data.album.images)} alt={`${data.album.name}'s album cover`} /></figure>
                         <div className="card-body">
                             <h2 className="card-title text-3xl">#{(i + 1).toString()}</h2>
                             <p>{getArtistString(data.artists)} - {data.name}</p>
+                        </div>
+                    </div>
+                </Link>
+                
+            ))}
+    </div>
+    )
+}
+
+const TopArtistsGridElement = ({ artist } : {artist: Artist[]}) => {
+    const getGenreString = (genres: string[]) => {
+        if (genres.length === 0){
+            return null
+        }
+        else if (genres.length === 1){
+            return genres[0]
+        }
+        let genresString: string = ""
+        genres.forEach((x, i) => {
+            if (i === 0){
+                genresString = x
+            }
+            else {
+                genresString += `, ${x}`
+            }
+        })
+        return genresString
+    }
+    console.log(artist)
+    return (
+        <div className="grid justify-center gap-6 mt-10 sm:mt-12 md:mt-16 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
+            {artist.map((data, i) => (
+                <Link key={data.uri} href={data.external_urls.spotify || ""}>
+                    <div className="card z-0 w-96 h-96 bg-base-100 shadow-xl image-full">
+                        <figure className="object-fill"><img className="object-fill w-full" src={getMaxSizeImage(data.images)} alt={`${data.name}`} /></figure>
+                        <div className="card-body">
+                            <h2 className="card-title text-3xl">#{(i + 1).toString()}</h2>
+                            <div className="flex-shrink">
+                                <p className="mb-0">{data.name}</p>
+                                <p className="mb-0">Genre: {getGenreString(data.genres)}</p>
+                            </div>
                         </div>
                     </div>
                 </Link>
@@ -157,8 +219,10 @@ export default async function ShowData({ params }: { params: { toptype: string, 
     
     return (
         <div className="">
-            <h3 className="text-center text-xl tracking-tight text-neutral md:text-2xl mt-2">Period: {params.timeperiod}</h3>
-            <TopTracksGridElement tracks={data} />
+            <h3 className="text-center text-lg tracking-tight text-neutral md:text-2xl mt-2">Type: {params.toptype}</h3>
+            <h3 className="text-center text-lg tracking-tight text-neutral md:text-2xl mt-2">Period: {params.timeperiod}</h3>
+            {(params.toptype === "tracks") && <TopTracksGridElement tracks={data} />}
+            {(params.toptype === "artists") && <TopArtistsGridElement artist={data} />}
         </div>
     )
 }

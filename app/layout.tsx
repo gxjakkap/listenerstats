@@ -43,7 +43,7 @@ export default function RootLayout({
             </div>
             <footer className="footer footer-center p-4 bg-base-300 text-base-content">
               <aside>
-                <p>Copyright © 2024 - Jakkaphat Ch.</p>
+                <a className="link" href="https://github.com/gxjakkap/listenerstats" target="_blank" rel="noopener,noreferer">Copyright © 2024 - Jakkaphat Ch.</a>
               </aside>
             </footer>
             <Analytics />

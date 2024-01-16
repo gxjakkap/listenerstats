@@ -8,7 +8,6 @@ const getMaxSizeImage = (imageArray: {
     width: number;
 }[]) => {
     imageArray.sort((a, b) => b.width - a.width)
-    console.log(imageArray)
     return imageArray[0].url
 }
 

@@ -38,15 +38,20 @@ export default async function ShowLayout({
             //TODO: refresh session
             redirect('/')
         } */
-        let ures: any
         if (!data){
-            ures = await fetch('https://api.spotify.com/v1/me', {
+            const ures = await fetch('https://api.spotify.com/v1/me', {
                 method: "GET",
                 headers: {
                     "Authorization": `Bearer ${accessToken}`
                 }
             })
-            data = await ures.json()
+            try {
+                data = await ures.json()
+            }
+            catch (err) {
+                console.log(err)
+                console.log(await ures.text())
+            }
             if ((ures.status === 401) && (data.error.message === "The access token expired")){
                 redirect('/')
             }

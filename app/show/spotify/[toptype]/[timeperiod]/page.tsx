@@ -6,7 +6,8 @@ import { redirect } from 'next/navigation'
 import SpotifyTopArtistsGridElement from '@/components/Spotify/TopArtists'
 import SpotifyTopTracksGridElement from '@/components/Spotify/TopTracks'
 
-
+import type { Artist } from '@/types/ShowTop'
+import SpotifyTopGenresGridElement from '@/components/Spotify/TopGenres'
 
 const getSpotifyTimePeriod = (tp: string) => {
     switch (tp) {
@@ -40,6 +41,8 @@ export default async function ShowTop({ params }: { params: { toptype: string, t
     }
 
     let data: any
+    let genres: string[] = []
+    let genresRanking: {genre: string, count: number}[] = []
 
     if (streamingService.value === 'spotify'){
         //const now = new Date()
@@ -50,12 +53,27 @@ export default async function ShowTop({ params }: { params: { toptype: string, t
             redirect('/')
         }
 
-        const res = await fetch(`https://api.spotify.com/v1/me/top/${params.toptype}?limit=10&offset=0&time_range=${params.timeperiod}`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${accessToken}`
-            }
-        })
+        let res
+
+        if (params.toptype === "genres"){
+            
+            res = await fetch(`https://api.spotify.com/v1/me/top/artists?limit=50&offset=0&time_range=${params.timeperiod}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            })
+            
+            
+        }
+        else {
+            res = await fetch(`https://api.spotify.com/v1/me/top/${params.toptype}?limit=10&offset=0&time_range=${params.timeperiod}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${accessToken}`
+                }
+            })
+        }
 
         const jsonData = await res.json()
 
@@ -64,17 +82,37 @@ export default async function ShowTop({ params }: { params: { toptype: string, t
         }
 
         data = jsonData.items
+
+        if (params.toptype === "genres"){
+            data.forEach((ea: Artist) => {
+                ea.genres.forEach(genre => {
+                    genres.push(genre)
+                })
+            })
+
+            let genreCountObject = {}
+
+            genres.forEach(x => {
+                (genreCountObject as any)[x] = (((genreCountObject as any)[x] || 0) + 1)
+            })
+            genresRanking = Object.entries(genreCountObject).map(([genre, count]) => ({ genre, count })) as any
+
+            genresRanking.sort((a, b) => b.count - a.count)
+
+            console.log(genresRanking)
+        }
     }
     else {
         redirect('/')
     }
     
     return (
-        <div className="">
+        <div>
             <h3 className="text-center text-lg tracking-tight text-neutral md:text-2xl mt-2">Type: {formatTopType(params.toptype)}</h3>
             <h3 className="text-center text-lg tracking-tight text-neutral md:text-2xl mt-2">Period: {getSpotifyTimePeriod(params.timeperiod)}</h3>
             {(params.toptype === "tracks") && <SpotifyTopTracksGridElement tracks={data} />}
             {(params.toptype === "artists") && <SpotifyTopArtistsGridElement artist={data} />}
+            {(params.toptype === "genres") && <SpotifyTopGenresGridElement genresRanking={genresRanking} />}
         </div>
     )
 }

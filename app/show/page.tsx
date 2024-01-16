@@ -33,6 +33,7 @@ export default function ShowHome() {
                     <select className="select select-bordered" value={topType} onChange={(event: ChangeEvent<HTMLSelectElement>) => {setType(event.target.value as any)}}>
                         <option value={"tracks"}>Tracks</option>
                         <option value={"artists"}>Artists</option>
+                        <option value={"genres"}>Genres (Alpha - Bug expected)</option>
                     </select>
                 </label>
                 <Link href={`/show/${streamingService}/${topType}/${timePeriod}`}><button className="btn btn-primary mt-5">Get Data</button></Link>

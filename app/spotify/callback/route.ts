@@ -3,13 +3,13 @@ import axios from 'axios'
 import { redirect } from 'next/navigation'
 import { cookies } from 'next/headers'
 
-let callbackUrl = "https://lstats.guntxjakka.me/spotify/callback"
-
-if (process.env.NODE_ENV === "development"){
-    callbackUrl = "http://localhost:3000/spotify/callback"
-}
-
 export async function GET(request: Request) {
+    let callbackUrl = "https://lstats.guntxjakka.me/spotify/callback"
+
+    if (process.env.NODE_ENV === "development"){
+        callbackUrl = `${request.headers.get("referer")}spotify/callback`
+        console.log(callbackUrl)
+    }      
     const { searchParams } = new URL(request.url)
     const code = searchParams.get('code')
     const state = searchParams.get('state')

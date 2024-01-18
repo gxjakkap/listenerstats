@@ -41,8 +41,8 @@ export default async function ShowTop({ params }: { params: { toptype: string, t
     }
 
     let data: any
-    let genres: string[] = []
-    let genresRanking: {genre: string, count: number}[] = []
+    let genres: { genre: string, artist: string }[] = []
+    let genresRanking: {genre: string, count: number, artists: string[]}[] = []
 
     if (streamingService.value === 'spotify'){
         //const now = new Date()
@@ -86,19 +86,33 @@ export default async function ShowTop({ params }: { params: { toptype: string, t
         if (params.toptype === "genres"){
             data.forEach((ea: Artist) => {
                 ea.genres.forEach(genre => {
-                    genres.push(genre)
+                    genres.push({ genre: genre, artist: ea.name})
                 })
             })
 
             let genreCountObject = {}
 
-            genres.forEach(x => {
+            /* genres.forEach(x => {
                 (genreCountObject as any)[x] = (((genreCountObject as any)[x] || 0) + 1)
             })
             genresRanking = Object.entries(genreCountObject).map(([genre, count]) => ({ genre, count })) as any
 
             genresRanking.sort((a, b) => b.count - a.count)
 
+            console.log(genresRanking) */
+
+            genres.forEach(x => {
+                const existing = genresRanking.find(item => item.genre === x.genre)
+
+                if (existing){
+                    existing.count += 1
+                    existing.artists.push(x.artist)
+                }
+                else {
+                    genresRanking.push({ genre: x.genre, count: 1, artists: [x.artist] })
+                }
+            })
+            genresRanking.sort((a, b) => b.count - a.count)
             console.log(genresRanking)
         }
     }

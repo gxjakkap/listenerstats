@@ -33,7 +33,7 @@ const SpotifyTopArtistsGridElement = ({ artist } : {artist: Artist[]}) => {
         <div className="grid justify-center gap-6 mt-10 sm:mt-12 md:mt-16 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3">
             {artist.map((data, i) => (
                 <Link key={data.uri} href={data.external_urls.spotify || ""}>
-                    <div className="card z-0 w-96 h-96 bg-base-100 shadow-xl image-full">
+                    <div className="card z-0 w-80 h-80 md:w-96 md:h-96 bg-base-100 shadow-xl image-full">
                         <figure className="object-fill"><img className="object-fill w-full" src={getMaxSizeImage(data.images)} alt={`${data.name}`} /></figure>
                         <div className="card-body">
                             <h2 className="card-title text-3xl">#{(i + 1).toString()}</h2>
